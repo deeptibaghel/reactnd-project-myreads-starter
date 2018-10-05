@@ -5,11 +5,16 @@ import Search from './Search';
 import ListBooks from './ListBooks';
 
 class BooksApp extends React.Component {
+  state = { shelfForBooks:'' }
+  onGetAll = (shelfForBooks) => {
+    this.setState({shelfForBooks: shelfForBooks});
+  }
   render() {
+    const {shelfForBooks} = this.state
     return (
       <div className="app">
             <Route exact path='/' render={() => (
-              <ListBooks />
+              <ListBooks onGetAll={this.onGetAll}/>
             )}
             />
             <Route path='/search' render={({ history }) => (
@@ -17,6 +22,7 @@ class BooksApp extends React.Component {
                 onSearch={() => {
                   history.push('/');
                 }}
+                shelfForBooks={shelfForBooks}
               />
             )}
             />

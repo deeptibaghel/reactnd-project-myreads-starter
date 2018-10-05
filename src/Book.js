@@ -13,12 +13,13 @@ class Book extends Component {
 
   render() {
     const {book} = this.props;
+    const shelf =  book.shelf ? book.shelf : (this.props.shelf ? this.props.shelf : "none");
     return (
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={{backgroundImage: `url("${book.imageLinks ? book.imageLinks.thumbnail : ''}")` }}></div>
           <div className="book-shelf-changer">
-            <select defaultValue={book.shelf ? book.shelf : "none"} onChange={this.handleChange} >
+            <select defaultValue={shelf} onChange={this.handleChange} >
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>

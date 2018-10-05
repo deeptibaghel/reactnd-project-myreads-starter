@@ -3,42 +3,54 @@ import BookShelf from './BookShelf';
 import * as BooksAPI from './BooksAPI';
 
 class ListBooks extends Component {
+  state = {currentlyReading: [], wantToRead: [], read: []}
+  shelves = {
+    currentlyReading: 'Currently Reading',
+    wantToRead: 'Want to Read',
+    read: 'Read'
+  }
 
-  state = {
-    currentlyReading: [],
-    wantToRead: [],
-    read: [],
-  };
+
 
   componentDidMount() {
     this.getBooks();
   }
 
   getBooks = () => {
+    let booksOnShelf = {};
+    Object.keys(this.shelves).forEach((shelf) => {
+      booksOnShelf[shelf] = [];
+    })
     BooksAPI.getAll().then(books => {
-      let booksOnShelf = {
-        currentlyReading: [],
-        wantToRead: [],
-        read: [],
-      };
+      let shelfForBooks = {};
       books.forEach((book) => {
         booksOnShelf[book.shelf].push(book);
+        shelfForBooks[book.id] = book.shelf;
       });
       this.setState(() => (booksOnShelf));
+      //pass back the shelf information for search page
+      this.props.onGetAll(shelfForBooks);
     });
   }
 
   render() {
-      const { currentlyReading, wantToRead, read } = this.state;
       return(
         <div className="list-books">
           <div className="list-books-title">
             <h1>MyReads</h1>
           </div>
           <div className="list-books-content">
-              <BookShelf shelf="Currently Reading" books={currentlyReading} onShelfChange={this.getBooks} />
-              <BookShelf shelf="Want to Read" books={wantToRead} onShelfChange={this.getBooks} />
-              <BookShelf shelf="Read" books={read} onShelfChange={this.getBooks} />
+            {
+              Object.keys(this.shelves).map((shelf) => (
+                <BookShelf
+                  key={shelf}
+                  title={this.shelves[shelf]}
+                  shelf={shelf}
+                  onShelfChange={this.getBooks}
+                  books={this.state[shelf]}
+                />
+              ))
+           }
           </div>
         </div>
       )
