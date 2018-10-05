@@ -30,10 +30,10 @@ To run the project:
     └── index.js # You should not need to modify this file. It is used for DOM rendering only.
 ```
 ## Files written by me
-├──Book.js
-├──BookShelf.js
-├──ListBooks.js
-└──Search.js
+- Book.js
+- BookShelf.js
+- ListBooks.js
+- Search.js
 
 ## Backend Server
 
